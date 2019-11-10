@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import models.BookModel;
 import models.PublisherModel;
 
 public class PublisherDAO {
@@ -60,14 +62,14 @@ public class PublisherDAO {
     	return publisherList;
     }
 
-    public Boolean store(String nome, String url) throws Throwable {
+    public Boolean store(PublisherModel publisher) throws Throwable {
         final String query = "INSERT INTO public.publishers(name, url) VALUES (?, ?);";
         Connection db = DatabaseFactory.getConnection();
 
         try {
             PreparedStatement pstm = db.prepareStatement(query);
-            pstm.setString(1, nome);
-            pstm.setString(2, url);
+            pstm.setString(1, publisher.getName());
+            pstm.setString(2, publisher.getUrl());
             int r = pstm.executeUpdate();
             System.out.println("Linhas modificadas: " + r);
 
@@ -141,5 +143,35 @@ public class PublisherDAO {
         }
         db.close(); 
         return false;
+    }
+    
+    public Boolean check(PublisherModel publisher) {
+    	Connection db = DatabaseFactory.getConnection();
+    	final String query = "SELECT * FROM public.publishers WHERE LOWER(name) LIKE LOWER(?) AND url = ?;";
+    	
+    	try {
+    		
+    		PreparedStatement pstm = db.prepareStatement(query);
+    		pstm.setString(1, publisher.getName());
+    		pstm.setString(2, publisher.getUrl());
+    		ResultSet rs = pstm.executeQuery();
+    		
+    		db.close();
+    		
+    		if(rs.next()) {
+    			// retorna verdadeiro se existir
+    			return true;
+    		} else {
+    			// retorna falso se n�o existir
+    			return false;
+    		} 		
+        	
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+    	
+    	
+    	return true;
     }
 }

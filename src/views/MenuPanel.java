@@ -1,5 +1,6 @@
 package views;
 
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -8,15 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controllers.ActionMenu;
-import controllers.TableBooksController;
-import models.TableBooks;
-
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
 public class MenuPanel extends JFrame {
