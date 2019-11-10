@@ -10,6 +10,8 @@ import daos.AuthorDAO;
 import daos.BookDAO;
 import daos.PublisherDAO;
 import java.awt.Component;
+import java.util.ArrayList;
+
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -84,15 +86,55 @@ static public void preencheTabela(String textSelect, JTable table, Object[] colN
             table.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer(table));
             table.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField(), table));
             
-        }
+        	}
         
         
         }
+        if("autores".equals(textSelect)){
+        	Object[][] data = new Object[0][4];
+        	DefaultTableModel dtm = new DefaultTableModel(data, colNames);
+        	table.setModel(dtm);
+        	
+        	AuthorDAO authorDao = new AuthorDAO();
+                
+           ArrayList<AuthorModel> autores = new ArrayList<>();    
+               
+           autores = authorDao.index();
+           
+        	for(AuthorModel autor: autores) {
+        		dtm.addRow(new Object[]{
+                        autor.getName(),
+                        autor.getFname(),
+                        "Editar",
+                        "Deletar"
+                    });
+        			
+        	}
+          
+               
+               
+               table.setModel(dtm);
+               
+                //ButtonRenderer(
+                table.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer(table));
+                table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditor(new JTextField(), table));
+                table.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer(table));
+                table.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JTextField(), table));
+                
+            	}
+        	
         
+        
+        if("editoras".equals(textSelect)){
+            
+        }
+        
+        
+}
         
         
     
-}
+
 static class ButtonEditor extends DefaultCellEditor
 {
   protected JButton btn;

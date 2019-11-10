@@ -31,12 +31,29 @@ public class ActionMenu implements ActionListener{
 		 
 		if(MenuOp == "livros") {
 			try {
-				Object[] colNames = {"Titulo", "Autores", "ISBN", "PreÃ§o", "Editora", "Editar", "Deletar"};
+				Object[] colNames = {"Titulo", "Autores", "ISBN", "Preço", "Editora", "Editar", "Deletar"};
 				TableBooksController.preencheTabela("livros", tabela,colNames,7);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 		}
+		if( MenuOp == "autores"){
+			try {
+				Object[] colNames = {"Nome", "Sobrenome","Editar", "Deletar"};
+				TableBooksController.preencheTabela("autores", tabela,colNames,4);
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+	        
+        }
+        if(MenuOp == "editoras"){
+        	try {
+				Object[] colNames = {"Titulo", "Autores", "ISBN", "Preço", "Editora", "Editar", "Deletar"};
+				TableBooksController.preencheTabela("editora", tabela,colNames,7);
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+        }
 		
 	}
     
