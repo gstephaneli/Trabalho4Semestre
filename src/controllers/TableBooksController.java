@@ -12,7 +12,6 @@ import daos.PublisherDAO;
 import java.awt.Component;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -20,10 +19,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import models.AuthorModel;
 import models.BookModel;
-import models.TableBooks;
-
-
-
 
 public final class TableBooksController {
 	
@@ -150,7 +145,6 @@ static class ButtonEditor extends DefaultCellEditor
 
    @Override
   protected void fireEditingStopped() {
-    // TODO Auto-generated method stub
     super.fireEditingStopped();
   }
 }

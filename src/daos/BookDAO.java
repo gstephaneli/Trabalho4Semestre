@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import models.BookModel;
+imporpublic t models.BookModel;
 
 public class BookDAO {
     
@@ -32,6 +32,33 @@ public class BookDAO {
         db.close(); 
         return bookList;
     }
+    
+    public ArrayList<BookModel> getBookByName(String name){
+    	ArrayList<BookModel> books = new ArrayList<>();
+    	Connection db = DatabaseFactory.getConnection();
+    	final String query = "SELECT * FROM public.books WHERE LOWER(title) LIKE LOWER(?);";
+    	
+    	try {
+    		
+    		PreparedStatement pstm = db.prepareStatement(query);
+    		pstm.setString(1, "%" + name + "%");
+    		ResultSet rs = pstm.executeQuery();
+    		
+    		while(rs.next()) {
+    			BookModel book = new BookModel(rs.getString("title"), rs.getString("isbn"), rs.getInt("publisher_id"), rs.getDouble("price"));
+    			books.add(book);
+    		}
+
+    		db.close();
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+    	
+    	
+    	return books;
+    }
+
 
     public Boolean store(BookModel book) throws Throwable {
         final String query = "INSERT INTO public.books(title, isbn, publisher_id, price) VALUES (?, ?, ?, ?);";
@@ -115,5 +142,35 @@ public class BookDAO {
         }
         db.close(); 
         return false;
+    }
+    
+    public Boolean check(BookModel book) {
+    	Connection db = DatabaseFactory.getConnection();
+    	final String query = "SELECT * FROM public.books WHERE LOWER(title) LIKE LOWER(?) AND isbn = ?;";
+    	
+    	try {
+    		
+    		PreparedStatement pstm = db.prepareStatement(query);
+    		pstm.setString(1, book.getTitle());
+    		pstm.setString(2, book.getIsbn());
+    		ResultSet rs = pstm.executeQuery();
+    		
+    		db.close();
+    		
+    		if(rs.next()) {
+    			// retorna verdadeiro se existir
+    			return true;
+    		} else {
+    			// retorna falso se n�o existir
+    			return false;
+    		} 		
+        	
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+    	
+    	
+    	return true;
     }
 }

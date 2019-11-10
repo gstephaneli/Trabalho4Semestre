@@ -33,6 +33,32 @@ public class PublisherDAO {
         db.close();  
         return publisherList;
     }
+    
+    public ArrayList<PublisherModel> getPublisherByName(String name){
+    	ArrayList<PublisherModel> publisherList = new ArrayList<>();
+    	Connection db = DatabaseFactory.getConnection();
+    	final String query = "SELECT * FROM public.publishers WHERE LOWER(name) LIKE LOWER(?);";
+    	
+    	try {
+    		
+    		PreparedStatement pstm = db.prepareStatement(query);
+    		pstm.setString(1, "%" + name + "%");
+    		ResultSet rs = pstm.executeQuery();
+    		
+    		while(rs.next()) {
+    			PublisherModel publisher = new PublisherModel(rs.getString("name"), rs.getString("url"));
+                publisherList.add(publisher);
+    		}
+
+    		db.close();
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+    	
+    	
+    	return publisherList;
+    }
 
     public Boolean store(String nome, String url) throws Throwable {
         final String query = "INSERT INTO public.publishers(name, url) VALUES (?, ?);";

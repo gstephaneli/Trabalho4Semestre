@@ -27,6 +27,7 @@ public class AuthorDAO {
                 AuthorModel author = new AuthorModel(rs.getString("name"), rs.getString("fname"));
                 authorList.add(author);
             }
+            db.close(); 
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -60,11 +61,39 @@ public class AuthorDAO {
                 }
 
             }
+            db.close(); 
         } catch (SQLException e) {
             System.out.println(e);
         }
-        db.close();  
+         
         return authorList;
+    }
+    
+    public ArrayList<AuthorModel> getAuthorByName(String name){
+    	ArrayList<AuthorModel> authors = new ArrayList<>();
+    	Connection db = DatabaseFactory.getConnection();
+    	final String query = "SELECT * FROM public.authors WHERE LOWER(name) LIKE LOWER(?) or LOWER(fname) LIKE LOWER(?);";
+    	
+    	try {
+    		
+    		PreparedStatement pstm = db.prepareStatement(query);
+    		pstm.setString(1, "%" + name + "%");
+    		pstm.setString(2, "%" + name + "%");
+    		ResultSet rs = pstm.executeQuery();
+    		
+    		while(rs.next()) {
+    			AuthorModel author = new AuthorModel(rs.getString("name"), rs.getString("fname"));
+    			authors.add(author);
+    		}
+
+    		db.close();
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+    	
+    	
+    	return authors;
     }
 
     public Boolean store(AuthorModel author) throws Throwable {
@@ -77,13 +106,16 @@ public class AuthorDAO {
             pstm.setString(2, author.getFname());
             int r = pstm.executeUpdate();
             System.out.println("Linhas modificadas: " + r);
-
-            return true;
+            db.close();  
+            if(r > 0) {
+            	return true;
+            } else {
+            	return false;
+            }
         } catch (SQLException e) {
             System.out.println(e);
+            return false;
         }
-        db.close();  
-        return false;
     }
 
     public AuthorModel edit(Integer author_id) throws Throwable {
@@ -100,10 +132,11 @@ public class AuthorDAO {
                 author.setFname(rs.getString("fname"));
                 author.setName(rs.getString("name"));
             }
+            db.close(); 
         } catch (SQLException e) {
             System.out.println(e);
         }
-        db.close();  
+         
         return author;
     }
 
@@ -118,12 +151,12 @@ public class AuthorDAO {
             pstm.setInt(3, author_id);
             int r = pstm.executeUpdate();
             System.out.println("Linhas modificadas: " + r);
-
+            db.close();  
             return true;
         } catch (SQLException e) {
             System.out.println(e);
         }
-        db.close();  
+        
         return false;
     }
 
@@ -136,12 +169,42 @@ public class AuthorDAO {
             pstm.setInt(1, author_id);
             int r = pstm.executeUpdate();
             System.out.println("Linhas modificadas: " + r);
-
+            db.close();  
             return true;
         } catch (SQLException e) {
             System.out.println(e);
         }
-        db.close();  
+        
         return false;
+    }
+    
+    public Boolean check(AuthorModel autor) {
+    	Connection db = DatabaseFactory.getConnection();
+    	final String query = "SELECT * FROM public.authors WHERE LOWER(name) LIKE LOWER(?) AND LOWER(fname) LIKE LOWER(?);";
+    	
+    	try {
+    		
+    		PreparedStatement pstm = db.prepareStatement(query);
+    		pstm.setString(1, autor.getName());
+    		pstm.setString(2, autor.getFname());
+    		ResultSet rs = pstm.executeQuery();
+    		
+    		db.close();
+    		
+    		if(rs.next()) {
+    			// retorna verdadeiro se existir
+    			return true;
+    		} else {
+    			// retorna falso se n�o existir
+    			return false;
+    		} 		
+        	
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+    	
+    	
+    	return true;
     }
 }

@@ -7,11 +7,7 @@ package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JFrame;
 import javax.swing.JTable;
-
-import models.TableBooks;
 
 /**
  *
@@ -38,7 +34,6 @@ public class ActionMenu implements ActionListener{
 				Object[] colNames = {"Titulo", "Autores", "ISBN", "Preço", "Editora", "Editar", "Deletar"};
 				TableBooksController.preencheTabela("livros", tabela,colNames,7);
 			} catch (Throwable e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
