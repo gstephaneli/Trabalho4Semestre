@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class DatabaseFactory {
 
-    public final static String DATABASE = "library";
+    public final static String DATABASE = "Livraria";
     public final static String URL = "jdbc:postgresql:" + DATABASE;
     public final static String USER = "postgres";
     public final static String PASS = "root";

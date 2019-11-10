@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import models.AuthorModel;
 import models.BookModel;
+import models.PublisherModel;
 
 public final class TableBooksController {
 	
@@ -34,7 +35,7 @@ public final class TableBooksController {
    
     
     
-static public void preencheTabela(String textSelect, JTable table, Object[] colNames, int contColunas) throws Throwable{
+    static public void preencheTabela(String textSelect, JTable table, Object[] colNames) throws Throwable{
     
     //table.getDtm().setNumRows(0);
     
@@ -42,13 +43,20 @@ static public void preencheTabela(String textSelect, JTable table, Object[] colN
         
     
         if("livros".equals(textSelect)){
-        	Object[][] data = new Object[0][contColunas];
-        	DefaultTableModel dtm = new DefaultTableModel(data, colNames);
-        	table.setModel(dtm);
+        	Object[][] data = new Object[0][7];
+        	DefaultTableModel dtm;
+			table.setModel(dtm = new DefaultTableModel(data, colNames) {
+        		 public boolean isCellEditable(int rowIndex, int columnIndex) {
+                     if(columnIndex == 5 || columnIndex == 6){
+                         return true;
+                     }
+                     else{
+                         return false;
+                     }
+                     
+                 }
+        	});
         	
-        	
-        	
-        	System.out.println("entrou");
         
         // bDao.index() retorna um arraylist de livros
         for (BookModel livro : bDao.index()) {    
@@ -76,24 +84,35 @@ static public void preencheTabela(String textSelect, JTable table, Object[] colN
                 PublisherDAO.edit(livro.getPublisher_id()).getName(),
                 "Editar",
                 "Deletar"
+                
             });
            
            table.setModel(dtm);
            
             //ButtonRenderer(
             table.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer(table));
-            table.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(new JTextField(), table));
+            table.getColumnModel().getColumn(5).setCellEditor(new ButtonEditorLivro(new JTextField(), table));
             table.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer(table));
-            table.getColumnModel().getColumn(6).setCellEditor(new ButtonEditor(new JTextField(), table));
+            table.getColumnModel().getColumn(6).setCellEditor(new ButtonEditorLivro(new JTextField(), table));
             
         	}
         
         
         }
         if("autores".equals(textSelect)){
-        	Object[][] data = new Object[0][4];
-        	DefaultTableModel dtm = new DefaultTableModel(data, colNames);
-        	table.setModel(dtm);
+        	Object[][] data = new Object[0][5];
+        	DefaultTableModel dtm;
+			table.setModel(dtm = new DefaultTableModel(data, colNames) {
+        		 public boolean isCellEditable(int rowIndex, int columnIndex) {
+                     if(columnIndex == 2 || columnIndex == 3){
+                         return true;
+                     }
+                     else{
+                         return false;
+                     }
+                     
+                 }
+        	});
         	
         	AuthorDAO authorDao = new AuthorDAO();
                 
@@ -106,7 +125,8 @@ static public void preencheTabela(String textSelect, JTable table, Object[] colN
                         autor.getName(),
                         autor.getFname(),
                         "Editar",
-                        "Deletar"
+                        "Deletar",
+                        autor.getAuthor_id()
                     });
         			
         	}
@@ -117,99 +137,68 @@ static public void preencheTabela(String textSelect, JTable table, Object[] colN
                
                 //ButtonRenderer(
                 table.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer(table));
-                table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditor(new JTextField(), table));
+                table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditorAutor(new JTextField(), table));
                 table.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer(table));
-                table.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JTextField(), table));
+                table.getColumnModel().getColumn(3).setCellEditor(new ButtonEditorAutor(new JTextField(), table));
                 
-            	}
+        }
         	
         
         
-        if("editoras".equals(textSelect)){
-            
+        
+		if("editoras".equals(textSelect)){
+        	
+        	Object[][] data = new Object[0][5];
+        	
+        	
+        	DefaultTableModel dtm;
+			table.setModel(dtm = new DefaultTableModel(data, colNames) {
+        		 public boolean isCellEditable(int rowIndex, int columnIndex) {
+                     if(columnIndex == 2 || columnIndex == 3){
+                         return true;
+                     }
+                     else{
+                         return false;
+                     }
+                     
+                 }
+        	});
+        	
+        	
+        	PublisherDAO editoraDao = new PublisherDAO();
+                
+           ArrayList<PublisherModel> editoras = new ArrayList<>();    
+               
+           editoras = editoraDao.index();
+           
+        	for(PublisherModel editora: editoras) {
+        		dtm.addRow(new Object[]{
+                        editora.getName(),
+                        editora.getUrl(),
+                        "Editar",
+                        "Deletar",
+                        editora.getPublisher_id()
+                       
+                    });
+        			
+        	}
+        	
+			
+               
+               
+               table.setModel(dtm);
+               
+                //ButtonRenderer(
+                table.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer(table));
+                table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditorEditora(new JTextField(), table));
+                table.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer(table));
+                table.getColumnModel().getColumn(3).setCellEditor(new ButtonEditorEditora(new JTextField(), table));
+                
         }
         
         
-}
+	}
         
-        
-    
-
-static class ButtonEditor extends DefaultCellEditor
-{
-  protected JButton btn;
-   private String lbl;
-   private Boolean clicked;
-
-   public ButtonEditor(JTextField txt, JTable table ) {
-    super(txt);
-
-    btn=new JButton();
-    btn.setOpaque(true);
-
-    //WHEN BUTTON IS CLICKED
-    btn.addActionListener(new ActionButtonSave(table));
-  }
-
-   //OVERRIDE A COUPLE OF METHODS
-   @Override
-  public Component getTableCellEditorComponent(JTable table, Object obj,
-      boolean selected, int row, int col) {
-
-      //SET TEXT TO BUTTON,SET CLICKED TO TRUE,THEN RETURN THE BTN OBJECT
-     lbl=(obj==null) ? "":obj.toString();
-     btn.setText(lbl);
-     clicked=true;
-    return btn;
-  }
-
-  //IF BUTTON CELL VALUE CHNAGES,IF CLICKED THAT IS
-   @Override
-  public Object getCellEditorValue() {
-
-     if(clicked)
-      {
-      //SHOW US SOME MESSAGE
-        JOptionPane.showMessageDialog(btn, lbl+" Clicked");
-      }
-    //SET IT TO FALSE NOW THAT ITS CLICKED
-    clicked=false;
-    return new String(lbl);
-  }
-
-   @Override
-  public boolean stopCellEditing() {
-
-         //SET CLICKED TO FALSE FIRST
-      clicked=false;
-    return super.stopCellEditing();
-  }
-
-   @Override
-  protected void fireEditingStopped() {
-    super.fireEditingStopped();
-  }
-}
-
-static class ButtonRenderer extends JButton implements  TableCellRenderer
-{
-
-  //CONSTRUCTOR
-  public ButtonRenderer(JTable table) {
-    //SET BUTTON PROPERTIES
-    setOpaque(true);
-  }
-  @Override
-  public Component getTableCellRendererComponent(JTable table, Object obj,
-      boolean selected, boolean focused, int row, int col) {
-
-    //SET PASSED OBJECT AS BUTTON TEXT
-      setText((obj==null) ? "":obj.toString());
-
-    return this;
-  }
-
-}
 
 }
 
