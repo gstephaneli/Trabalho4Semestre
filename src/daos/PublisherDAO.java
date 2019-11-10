@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import models.BookModel;
 import models.PublisherModel;
 
 public class PublisherDAO {
@@ -26,7 +24,7 @@ public class PublisherDAO {
             ResultSet rs = stm.executeQuery(query);
             while (rs.next()) {
                 //System.out.println("Nome: " + rs.getString(2) + "URL: " + rs.getString(3));
-                PublisherModel publisher = new PublisherModel(rs.getString("name"), rs.getString("url"));
+                PublisherModel publisher = new PublisherModel(rs.getInt("publisher_id"),rs.getString("name"), rs.getString("url"));
                 publisherList.add(publisher);
             }
         } catch (SQLException e) {
@@ -97,6 +95,7 @@ public class PublisherDAO {
             pstm.setInt(1, publisher_id);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
+            	publisher.setPublisher_id(rs.getInt("publisher_id"));
                 publisher.setName(rs.getString("name"));
                 publisher.setUrl(rs.getString("url"));
             }
@@ -107,15 +106,15 @@ public class PublisherDAO {
         return publisher;
     }
 
-    public Boolean update(String name, String url, Integer publisher_id) throws Throwable {
+    public Boolean update(PublisherModel publisher) throws Throwable {
         final String query = "UPDATE public.publishers SET name = ? , url = ? WHERE publisher_id = ?;";
         Connection db = DatabaseFactory.getConnection();
 
         try {
             PreparedStatement pstm = db.prepareStatement(query);
-            pstm.setString(1, name);
-            pstm.setString(2, url);
-            pstm.setInt(3, publisher_id);
+            pstm.setString(1, publisher.getName());
+            pstm.setString(2, publisher.getUrl());
+            pstm.setInt(3, publisher.getPublisher_id());
             int r = pstm.executeUpdate();
             System.out.println("Linhas modificadas: " + r);
 

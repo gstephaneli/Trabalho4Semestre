@@ -6,6 +6,7 @@ package models;
 public class PublisherModel {
 
     String name, url;
+    Integer publisher_id;
     
     public PublisherModel() {}
 
@@ -13,8 +14,24 @@ public class PublisherModel {
         this.name = name;
         this.url = url;
     }
+    
 
-    public void setName(String name){
+    public PublisherModel(Integer publisher_id,String name, String url) {
+		
+		this.name = name;
+		this.url = url;
+		this.publisher_id = publisher_id;
+	}
+
+	public Integer getPublisher_id() {
+		return publisher_id;
+	}
+
+	public void setPublisher_id(Integer publisher_id) {
+		this.publisher_id = publisher_id;
+	}
+
+	public void setName(String name){
         this.name = name;
     }
 
