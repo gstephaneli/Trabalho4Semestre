@@ -20,7 +20,7 @@ public class DatabaseFactory {
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseFactory.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // System.out.println("Conexao feita");
+        
         return connection;
     }
 }
