@@ -23,7 +23,7 @@ public class MenuPanel extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
-	private JTextField textField;
+	private JTextField CampoDeBusca;
 
 	/**
 	 * Launch the application.
@@ -50,28 +50,37 @@ public class MenuPanel extends JFrame {
 	 */
 	public MenuPanel() throws Throwable {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 300);
+		setBounds(0, 0, 1370, 400);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-		JMenu mnLivros = new JMenu("Livros");
-		menuBar.add(mnLivros);
+		JMenu menuLivros = new JMenu("Livros");
+		menuBar.add(menuLivros);
 		
-		JMenuItem mntmListar = new JMenuItem("Listar");
-		mnLivros.add(mntmListar);
+		JMenuItem menuLivrosListar = new JMenuItem("Listar");
+		menuLivros.add(menuLivrosListar);
 		
-		JMenu mnAutores = new JMenu("Autores");
-		menuBar.add(mnAutores);
+		JMenuItem menuLivrosAdicionar = new JMenuItem("Adicionar");
+		menuLivros.add(menuLivrosAdicionar);
 		
-		JMenuItem mntmListar_1 = new JMenuItem("Listar");
-		mnAutores.add(mntmListar_1);
+		JMenu menuAutores = new JMenu("Autores");
+		menuBar.add(menuAutores);
 		
-		JMenu mnEditora = new JMenu("Editora");
-		menuBar.add(mnEditora);
+		JMenuItem menuAutoresListar = new JMenuItem("Listar");
+		menuAutores.add(menuAutoresListar);
 		
-		JMenuItem mntmListar_2 = new JMenuItem("Listar");
-		mnEditora.add(mntmListar_2);
+		JMenuItem menuAutoresAdicionar = new JMenuItem("Adicionar");
+		menuAutores.add(menuAutoresAdicionar);
+		
+		JMenu menuEditora = new JMenu("Editora");
+		menuBar.add(menuEditora);
+		
+		JMenuItem menuEditoraListar = new JMenuItem("Listar");
+		menuEditora.add(menuEditoraListar);
+		
+		JMenuItem menuEditoraAdicionar = new JMenuItem("Adicionar");
+		menuEditora.add(menuEditoraAdicionar);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -81,11 +90,11 @@ public class MenuPanel extends JFrame {
 		//table.setModel(table.getDtm());
 		contentPane.add(table, BorderLayout.CENTER);
 		
-		textField = new JTextField();
-		contentPane.add(textField, BorderLayout.NORTH);
-		textField.setColumns(10);
-		mntmListar.addActionListener(new ActionMenu("livros", table));
-		
+		CampoDeBusca = new JTextField();
+		contentPane.add(CampoDeBusca, BorderLayout.NORTH);
+		CampoDeBusca.setColumns(10);
+		menuLivrosListar.addActionListener(new ActionMenu("livros", table));
+		menuAutoresListar.addActionListener(new ActionMenu("autores", table));
 		JScrollPane scroolPane = new JScrollPane(table);
 		getContentPane().add(scroolPane, BorderLayout.CENTER);
 		

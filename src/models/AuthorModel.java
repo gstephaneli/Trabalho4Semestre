@@ -13,8 +13,21 @@ public class AuthorModel {
         this.name = name;
         this.fname = fname;
     }
+    public AuthorModel(Integer id_author,String name, String fname) {
+        this.name = name;
+        this.fname = fname;
+        this.author_id = id_author;
+    }
 
-    public String getName() {
+    public Integer getAuthor_id() {
+		return author_id;
+	}
+
+	public void setAuthor_id(Integer author_id) {
+		this.author_id = author_id;
+	}
+
+	public String getName() {
         return name;
     }
 

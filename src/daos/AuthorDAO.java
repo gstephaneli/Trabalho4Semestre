@@ -24,7 +24,7 @@ public class AuthorDAO {
             ResultSet rs = stm.executeQuery(query);
             while (rs.next()) {
                 // System.out.println("name: " + rs.getString(3) + rs.getString(2));
-                AuthorModel author = new AuthorModel(rs.getString("name"), rs.getString("fname"));
+                AuthorModel author = new AuthorModel(rs.getInt("author_id"),rs.getString("name"), rs.getString("fname"));
                 authorList.add(author);
             }
             db.close(); 
@@ -129,6 +129,7 @@ public class AuthorDAO {
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
                 // System.out.println("name: " + rs.getString(3) + rs.getString(2));
+            	author.setAuthor_id(rs.getInt("author_id"));
                 author.setFname(rs.getString("fname"));
                 author.setName(rs.getString("name"));
             }
@@ -140,7 +141,7 @@ public class AuthorDAO {
         return author;
     }
 
-    public Boolean update(AuthorModel author, Integer author_id) throws Throwable {
+    public Boolean update(AuthorModel author) throws Throwable {
         final String query = "UPDATE public.authors SET name = ?, fname = ? WHERE author_id = ?;";
         Connection db = DatabaseFactory.getConnection();
 
@@ -148,7 +149,7 @@ public class AuthorDAO {
             PreparedStatement pstm = db.prepareStatement(query);
             pstm.setString(1, author.getName());
             pstm.setString(2, author.getFname());
-            pstm.setInt(3, author_id);
+            pstm.setInt(3, author.getAuthor_id());
             int r = pstm.executeUpdate();
             System.out.println("Linhas modificadas: " + r);
             db.close();  
