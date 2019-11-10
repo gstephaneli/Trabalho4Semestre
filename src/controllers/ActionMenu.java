@@ -32,7 +32,7 @@ public class ActionMenu implements ActionListener{
 		if(MenuOp == "livros") {
 			try {
 				Object[] colNames = {"Titulo", "Autores", "ISBN", "Preço", "Editora", "Editar", "Deletar"};
-				TableBooksController.preencheTabela("livros", tabela,colNames,7);
+				TableBooksController.preencheTabela("livros", tabela,colNames);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
@@ -40,7 +40,7 @@ public class ActionMenu implements ActionListener{
 		if( MenuOp == "autores"){
 			try {
 				Object[] colNames = {"Nome", "Sobrenome","Editar", "Deletar"};
-				TableBooksController.preencheTabela("autores", tabela,colNames,4);
+				TableBooksController.preencheTabela("autores", tabela,colNames);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
@@ -48,8 +48,8 @@ public class ActionMenu implements ActionListener{
         }
         if(MenuOp == "editoras"){
         	try {
-				Object[] colNames = {"Titulo", "Autores", "ISBN", "Preço", "Editora", "Editar", "Deletar"};
-				TableBooksController.preencheTabela("editora", tabela,colNames,7);
+				Object[] colNames = {"Nome", "URL","Editar", "Deletar"};
+				TableBooksController.preencheTabela("editoras", tabela,colNames);
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}

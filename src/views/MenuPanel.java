@@ -92,6 +92,7 @@ public class MenuPanel extends JFrame {
 		CampoDeBusca.setColumns(10);
 		menuLivrosListar.addActionListener(new ActionMenu("livros", table));
 		menuAutoresListar.addActionListener(new ActionMenu("autores", table));
+		menuEditoraListar.addActionListener(new ActionMenu("editoras", table));
 		JScrollPane scroolPane = new JScrollPane(table);
 		getContentPane().add(scroolPane, BorderLayout.CENTER);
 		

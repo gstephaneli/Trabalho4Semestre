@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import models.AuthorModel;
 import models.BookModel;
+import models.PublisherModel;
 
 public final class TableBooksController {
 	
@@ -34,7 +35,7 @@ public final class TableBooksController {
    
     
     
-static public void preencheTabela(String textSelect, JTable table, Object[] colNames, int contColunas) throws Throwable{
+static public void preencheTabela(String textSelect, JTable table, Object[] colNames) throws Throwable{
     
     //table.getDtm().setNumRows(0);
     
@@ -42,7 +43,7 @@ static public void preencheTabela(String textSelect, JTable table, Object[] colN
         
     
         if("livros".equals(textSelect)){
-        	Object[][] data = new Object[0][contColunas];
+        	Object[][] data = new Object[0][7];
         	DefaultTableModel dtm = new DefaultTableModel(data, colNames);
         	table.setModel(dtm);
         	
@@ -121,12 +122,42 @@ static public void preencheTabela(String textSelect, JTable table, Object[] colN
                 table.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer(table));
                 table.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JTextField(), table));
                 
-            	}
+        }
         	
         
         
         if("editoras".equals(textSelect)){
-            
+        	System.out.println("entrou edi");
+        	Object[][] data = new Object[0][4];
+        	DefaultTableModel dtm = new DefaultTableModel(data, colNames);
+        	table.setModel(dtm);
+        	
+        	PublisherDAO editoraDao = new PublisherDAO();
+                
+           ArrayList<PublisherModel> editoras = new ArrayList<>();    
+               
+           editoras = editoraDao.index();
+           
+        	for(PublisherModel editora: editoras) {
+        		dtm.addRow(new Object[]{
+                        editora.getName(),
+                        editora.getUrl(),
+                        "Editar",
+                        "Deletar"
+                    });
+        			
+        	}
+          
+               
+               
+               table.setModel(dtm);
+               
+                //ButtonRenderer(
+                table.getColumnModel().getColumn(2).setCellRenderer(new ButtonRenderer(table));
+                table.getColumnModel().getColumn(2).setCellEditor(new ButtonEditor(new JTextField(), table));
+                table.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer(table));
+                table.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(new JTextField(), table));
+                
         }
         
         
