@@ -208,4 +208,33 @@ public class AuthorDAO {
     	
     	return true;
     }
+    
+    public Boolean checkId(AuthorModel autor) {
+    	Connection db = DatabaseFactory.getConnection();
+    	final String query = "SELECT * FROM public.authors WHERE author_id = ?;";
+    	
+    	try {
+    		
+    		PreparedStatement pstm = db.prepareStatement(query);
+    		pstm.setInt(1, autor.getAuthor_id());
+    		ResultSet rs = pstm.executeQuery();
+    		
+    		db.close();
+    		
+    		if(rs.next()) {
+    			// retorna verdadeiro se existir
+    			return true;
+    		} else {
+    			// retorna falso se n�o existir
+    			return false;
+    		} 		
+        	
+			
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+    	
+    	
+    	return true;
+    }
 }
