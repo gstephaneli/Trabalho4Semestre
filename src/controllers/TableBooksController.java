@@ -28,14 +28,14 @@ public final class TableBooksController {
 	
    
 
-    public TableBooksController() throws Throwable {
+    public TableBooksController() {
         
     }
 
    
     
     
-    static public void preencheTabela(String textSelect, JTable table, Object[] colNames) throws Throwable{
+ public void preencheTabela(String textSelect, JTable table, Object[] colNames) throws Throwable{
     
     //table.getDtm().setNumRows(0);
     
